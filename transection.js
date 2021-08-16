@@ -1,54 +1,49 @@
+function getInputValue(inputId) {
+    const inputField = document.getElementById(inputId);
+    const userAmmountText = inputField.value;
+    const userAmmount = parseFloat(userAmmountText);
+    // clear the deposite input values 
+    inputField.value = '';
+    return userAmmount;
+}
 
-// handle deposit button event 
-document.getElementById('deposite-submit').addEventListener('click', function () {
-    const userDepositeField = document.getElementById('deposite-input');
-    const userDepositeAmmountText = userDepositeField.value;
-    const userDepositeAmmount = parseFloat(userDepositeAmmountText);
-    //console.log(userDepositeAmmount);
-
-    // show user deposite 
-    const depositeTotal = document.getElementById('deposite-total');
+function updateTotalField(useronput, depositeAmmount) {
+    const depositeTotal = document.getElementById(useronput);
     const currentDepositeAmmountText = depositeTotal.innerText;
     const currentDepositeAmmount = parseFloat(currentDepositeAmmountText)
-
-    const newDepositeTotal = currentDepositeAmmount + userDepositeAmmount;
+    const newDepositeTotal = currentDepositeAmmount + depositeAmmount
     depositeTotal.innerText = newDepositeTotal;
-    // clear the deposite input values 
-    userDepositeField.value = '';
-    // update total balance 
+}
+
+function updateTotalbalance(depositeAmmount,isadd){
     const balanceTotal = document.getElementById('balance-total');
     const balanceTotalText = balanceTotal.innerText;
     const previouseBalanceTotal = parseFloat(balanceTotalText);
-    const newBalanceTotal = previouseBalanceTotal + userDepositeAmmount;
-    balanceTotal.innerText = newBalanceTotal;
-
-
-})
-//
+   
+    if(isadd == true){
+        const newBalanceTotal = previouseBalanceTotal + depositeAmmount;
+        balanceTotal.innerText = newBalanceTotal;
+    }
+    else
+    {
+        const newBalanceTotal = previouseBalanceTotal - depositeAmmount;
+        balanceTotal.innerText = newBalanceTotal;
+    }
+}
+// handle deposit button event 
+document.getElementById('deposite-submit').addEventListener('click', function () {
+    const depositeAmmount = getInputValue('deposite-input');
+    const useriputtotal = updateTotalField('deposite-total', depositeAmmount);
+    updateTotalbalance(depositeAmmount,true);
+    // update total balance 
+ 
+});
 // handel wdithdrow button event 
-
 document.getElementById('withdrow-submit').addEventListener('click', function () {
-    const userInputWdithrowField = document.getElementById('withdrow-input');
-    const userWidthdrowAmmoutText = userInputWdithrowField.value;
-    const userWdithrowAmmount = parseFloat(userWidthdrowAmmoutText);
-    console.log(userWidthdrowAmmoutText);
-
+    const userWdithrowAmmount = getInputValue('withdrow-input');
     // show user widthrow
-    const wdithdrowTotal = document.getElementById('widrow-total');
-    const currentWidrowAmmountText = wdithdrowTotal.innerText;
-    // console.log(currentWidrowAmmountText);
+    updateTotalField('widrow-total', userWdithrowAmmount) ;
+    updateTotalbalance(userWdithrowAmmount,false);
 
-    const crrentWidrowAmmount = parseFloat(currentWidrowAmmountText);
-    const newWdithTotal = crrentWidrowAmmount + userWdithrowAmmount;
-    wdithdrowTotal.innerText = newWdithTotal;
-    userInputWdithrowField.value = '';
-
-
-    // total balance after widthrow 
-    const toalBalance = document.getElementById('balance-total')
-    const totalBalancetext = toalBalance.innerText;
-    const previousBlanceTotal = parseFloat(totalBalancetext);
-    const newbalence = previousBlanceTotal - userWdithrowAmmount;
-    toalBalance.innerText =newbalence;
-})
+});
 
